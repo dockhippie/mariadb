@@ -67,6 +67,10 @@ Usage: manage <command> [<args>]
 
 Some useful manage commands are:
    commands  List all available sub commands
+   create    Create a database
+   grant     Grant database access
+   remove    Create a database
+   revoke    Revoke database access
 ```
 
 
