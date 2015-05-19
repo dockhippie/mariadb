@@ -3,17 +3,15 @@ MAINTAINER Thomas Boerger <thomas@webhippie.de>
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN groupadd -r mysql && \
-  useradd -r -g mysql mysql
-
-RUN { \
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a1bb943db && \
+  echo deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/debian/ wheezy main | tee /etc/apt/sources.list.d/mariadb.list && \
+  { \
     echo 'Package: *'; \
     echo 'Pin: release o=MariaDB'; \
     echo 'Pin-Priority: 999'; \
-  } > /etc/apt/preferences.d/mariadb
-
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a1bb943db && \
-  echo deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/debian/ wheezy main | tee /etc/apt/sources.list.d/mariadb.list && \
+  } > /etc/apt/preferences.d/mariadb && \
+  groupadd -r mysql && \
+  useradd -r -g mysql mysql && \
   apt-get update && \
   apt-get install -y \
     mariadb-server \
