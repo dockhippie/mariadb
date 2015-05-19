@@ -1,0 +1,81 @@
+[client]
+port = 3306
+socket = /var/run/mysqld/mysqld.sock
+
+[mysqld_safe]
+socket = /var/run/mysqld/mysqld.sock
+nice = 0
+syslog
+
+[mysqld]
+user = mysql
+pid-file = /var/run/mysqld/mysqld.pid
+socket = /var/run/mysqld/mysqld.sock
+port = 3306
+basedir = /usr
+datadir = /var/lib/mysql
+tmpdir = /tmp
+lc_messages_dir = /usr/share/mysql
+lc_messages = en_US
+skip-external-locking
+bind-address = 0.0.0.0
+
+max_connections = ${MARIADB_MAX_CONNECTIONS}
+connect_timeout = ${MARIADB_CONNECT_TIMEOUT}
+wait_timeout = ${MARIADB_WAIT_TIMEOUT}
+max_allowed_packet = ${MARIADB_MAX_ALLOWED_PACKET}
+thread_cache_size = ${MARIADB_THREAD_CACHE_SIZE}
+sort_buffer_size = ${MARIADB_SORT_BUFFER_SIZE}
+bulk_insert_buffer_size = ${MARIADB_BULK_INSERT_BUFFER_SIZE}
+tmp_table_size = ${MARIADB_TMP_TABLE_SIZE}
+max_heap_table_size = ${MARIADB_MAX_HEAP_TABLE_SIZE}
+
+myisam_recover = ${MARIADB_MYISAM_RECOVER}
+key_buffer_size = ${MARIADB_KEY_BUFFER_SIZE}
+open-files-limit = ${MARIADB_OPEN_FILES_LIMIT}
+table_open_cache = ${MARIADB_TABLE_OPEN_CACHE}
+myisam_sort_buffer_size = ${MARIADB_MYISAM_SORT_BUFFER_SIZE}
+concurrent_insert = ${MARIADB_CONCURRENT_INSERT}
+read_buffer_size = ${MARIADB_READ_BUFFER_SIZE}
+read_rnd_buffer_size = ${MARIADB_READ_RND_BUFFER_SIZE}
+
+query_cache_limit = ${MARIADB_QUERY_CACHE_LIMIT}
+query_cache_size = ${MARIADB_QUERY_CACHE_SIZE}
+query_cache_type = ${MARIADB_QUERY_CACHE_TYPE}
+
+#general_log_file = /var/log/mysql/mysql.log
+#general_log = 1
+log_warnings = ${MARIADB_LOG_WARNINGS}
+
+slow_query_log = ${MARIADB_SLOW_QUERY_LOG}
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = ${MARIADB_LONG_QUERY_TIME}
+log_slow_rate_limit = ${MARIADB_LOG_SLOW_RATE_LIMIT}
+log_slow_verbosity = ${MARIADB_LOG_SLOW_VERBOSITY}
+#log-queries-not-using-indexes
+#log_slow_admin_statements
+
+#sql_mode = NO_ENGINE_SUBSTITUTION,TRADITIONAL
+
+default_storage_engine = InnoDB
+#innodb_log_file_size = 50M
+innodb_buffer_pool_size = ${MARIADB_INNODB_BUFFER_POOL_SIZE}
+innodb_log_buffer_size = ${MARIADB_LOG_BUFFER_SIZE}
+innodb_file_per_table = ${MARIADB_FILE_PER_TABLE}
+innodb_open_files = ${MARIADB_OPEN_FILES}
+innodb_io_capacity = ${MARIADB_IO_CAPACITY}
+innodb_flush_method = ${MARIADB_FLUSH_METHOD}
+
+# ssl-ca=/etc/mysql/cacert.pem
+# ssl-cert=/etc/mysql/server-cert.pem
+# ssl-key=/etc/mysql/server-key.pem
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = ${MARIADB_MAX_ALLOWED_PACKE}
+
+[isamchk]
+key_buffer = ${MARIADB_KEY_BUFFER}
+
+!includedir /etc/mysql/conf.d/

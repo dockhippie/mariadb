@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ -f ./setup ]
+then
+  ./setup
+fi
+
+STARTCMD="/usr/sbin/mysqld"
+
+if [ ! -d "/var/lib/mysql/mysql" ]
+then
+  if [ -z "$MARIADB_ROOT_PASSWORD" ]
+  then
+    echo >&2 "Error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
+    /usr/bin/s6-svscanctl -t /etc/s6
+    exit 1
+  fi
+
+  echo "Running mysql_install_db..."
+  mysql_install_db --datadir="/var/lib/mysql"
+  echo "Finished mysql_install_db"
+
+  INIT_FILE="/tmp/mariadb-boot.sql"
+
+  cat > "${INIT_FILE}" <<-EOSQL
+    DELETE FROM mysql.user;
+    CREATE USER 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';
+    GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
+    DROP DATABASE IF EXISTS test;
+    FLUSH PRIVILEGES;
+EOSQL
+
+  STARTCMD="${STARTCMD} --init-file=${INIT_FILE}"
+fi
+
+exec ${STARTCMD}

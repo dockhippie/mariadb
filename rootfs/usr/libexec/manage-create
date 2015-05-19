@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Usage: manage create <username> <password>
+# Summary: Create a database
+# Help: This command is used to create a database
+set -e
+[[ -z $_MANAGE_ROOT ]] && exit 1
+
+USERNAME=$1
+PASSWORD=$2
+
+if [ -z "${USERNAME}" ]
+then
+  echo "Please provide a username"
+  exit 1
+fi
+
+if [ -z "${PASSWORD}" ]
+then
+  echo "Please provide a password"
+  exit 1
+fi
+
+read -r -d "" QUERY <<-EOSQL
+CREATE DATABASE IF NOT EXISTS \`${USERNAME}\`;
+CREATE USER '${USERNAME}'@'%' IDENTIFIED BY '${PASSWORD}';
+GRANT ALL PRIVILEGES ON \`${USERNAME}\`.* TO '${USERNAME}'@'%';
+FLUSH PRIVILEGES;
+EOSQL
+
+echo "${QUERY}" | mysql -uroot -p${MARIADB_ROOT_PASSWORD}

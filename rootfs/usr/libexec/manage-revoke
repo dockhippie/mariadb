@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Usage: manage revoke <username> <database>
+# Summary: Revoke database access
+# Help: This command is used to revoke database access
+set -e
+[[ -z $_MANAGE_ROOT ]] && exit 1
+
+USERNAME=$1
+DATABASE=$2
+
+if [ -z "${USERNAME}" ]
+then
+  echo "Please provide a username"
+  exit 1
+fi
+
+if [ -z "${DATABASE}" ]
+then
+  echo "Please provide a database"
+  exit 1
+fi
+
+read -r -d "" QUERY <<-EOSQL
+REVOKE ALL PRIVILEGES ON \`${DATABASE}\`.* FROM '${USERNAME}'@'%';
+FLUSH PRIVILEGES;
+EOSQL
+
+echo "${QUERY}" | mysql -uroot -p${MARIADB_ROOT_PASSWORD}
