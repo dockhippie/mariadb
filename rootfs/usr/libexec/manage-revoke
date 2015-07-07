@@ -20,9 +20,10 @@ then
   exit 1
 fi
 
-read -r -d "" QUERY <<-EOSQL
+QUERY=$(cat <<EOSQL
 REVOKE ALL PRIVILEGES ON \`${DATABASE}\`.* FROM '${USERNAME}'@'%';
 FLUSH PRIVILEGES;
 EOSQL
+)
 
 echo "${QUERY}" | mysql -uroot -p${MARIADB_ROOT_PASSWORD}

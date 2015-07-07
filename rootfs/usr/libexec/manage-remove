@@ -13,10 +13,11 @@ then
   exit 1
 fi
 
-read -r -d "" QUERY <<-EOSQL
+QUERY=$(cat <<EOSQL
 DROP USER IF EXISTS '${USERNAME}'@'%';
 DROP DATABASE IF EXISTS \`${USERNAME}\`;
 FLUSH PRIVILEGES;
 EOSQL
+)
 
 echo "${QUERY}" | mysql -uroot -p${MARIADB_ROOT_PASSWORD}
