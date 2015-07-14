@@ -67,9 +67,9 @@ Usage: manage <command> [<args>]
 
 Some useful manage commands are:
    commands  List all available sub commands
-   create    Create a database
+   create    Create a database and user
    grant     Grant database access
-   remove    Create a database
+   remove    Drop a database and user
    revoke    Revoke database access
 ```
 
@@ -82,6 +82,7 @@ Fork -> Patch -> Push -> Pull Request
 ## Authors
 
 * [Thomas Boerger](https://github.com/tboerger)
+* [Felix Böhm](https://github.com/felixboehm)
 
 
 ## License
