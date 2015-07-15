@@ -6,7 +6,7 @@ set -e
 [[ -z $_MANAGE_ROOT ]] && exit 1
 
 QUERY=$(cat <<EOSQL
-SHOW DATABASE;
+SHOW DATABASES;
 EOSQL
 )
 
