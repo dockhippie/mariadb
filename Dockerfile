@@ -21,6 +21,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a
   rm -rf /var/lib/mysql/* && \
   rm -rf /var/lib/apt/lists/*
 
+VOLUME ["/var/lib/mysql"]
+
 ADD rootfs /
 EXPOSE 3306
 
