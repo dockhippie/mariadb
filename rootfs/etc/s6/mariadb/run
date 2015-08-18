@@ -31,8 +31,7 @@ then
     GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
     DROP DATABASE IF EXISTS test;
     FLUSH PRIVILEGES;
-EOSQL
-  fi
+  EOSQL
 
   STARTCMD="${STARTCMD} --init-file=${INIT_FILE}"
 fi
