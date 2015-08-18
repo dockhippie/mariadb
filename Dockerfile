@@ -11,7 +11,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a
     echo 'Pin-Priority: 999'; \
   } > /etc/apt/preferences.d/mariadb && \
   groupadd -r mysql && \
-  useradd -r -g mysql mysql && \
+  useradd -r -d /var/lib/mysql -g mysql mysql && \
   apt-get update && \
   apt-get install -y \
     mariadb-server \

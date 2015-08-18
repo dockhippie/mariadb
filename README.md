@@ -71,6 +71,7 @@ Some useful manage commands are:
    grant     Grant database access
    remove    Drop a database and user
    revoke    Revoke database access
+   show      Show databases
 ```
 
 
