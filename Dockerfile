@@ -1,8 +1,6 @@
 FROM webhippie/debian:latest
 MAINTAINER Thomas Boerger <thomas@webhippie.de>
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xcbcb082a1bb943db && \
   echo deb http://ftp.osuosl.org/pub/mariadb/repo/10.0/debian/ wheezy main | tee /etc/apt/sources.list.d/mariadb.list && \
   { \
@@ -27,4 +25,4 @@ ADD rootfs /
 EXPOSE 3306
 
 WORKDIR /root
-CMD ["/usr/bin/s6-svscan","/etc/s6"]
+CMD ["/usr/bin/s6-svscan", "/etc/s6"]

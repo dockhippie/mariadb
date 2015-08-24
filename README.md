@@ -1,13 +1,20 @@
 # MariaDB
 
-These are docker images for MariaDB database running on an
+[![](https://badge.imagelayers.io/webhippie/mariadb:latest.svg)](https://imagelayers.io/?images=webhippie/mariadb:latest 'Get your own badge on imagelayers.io')
+
+These are docker images for [MariaDB](https://mariadb.org) database running on an
 [Debian container](https://registry.hub.docker.com/u/webhippie/debian/).
 
 
 ## Usage
 
-```
-docker run -ti --name mariadb webhippie/mariadb:latest
+```bash
+docker run -ti \
+  --name mariadb \
+  webhippie/mariadb:latest
+
+# Execute this for further available commands
+docker exec -ti mariadb manage help
 ```
 
 
@@ -57,6 +64,20 @@ ENV MARIADB_KEY_BUFFER 16M
 ENV MARIADB_DEFAULT_CHARACTER_SET utf8
 ENV MARIADB_CHARACTER_SET_SERVER utf8
 ENV MARIADB_COLLATION_SERVER utf8_general_ci
+```
+
+
+## Inherited environment variables
+
+```bash
+ENV LOGSTASH_ENABLED false
+ENV LOGSTASH_HOST logstash
+ENV LOGSTASH_PORT 5043
+ENV LOGSTASH_CA /etc/ssl/logstash/certs/ca.pem # As string or filename
+ENV LOGSTASH_CERT /etc/ssl/logstash/certs/cert.pem # As string or filename
+ENV LOGSTASH_KEY /etc/ssl/logstash/private/cert.pem # As string or filename
+ENV LOGSTASH_TIMEOUT 15
+ENV LOGSTASH_OPTS
 ```
 
 
