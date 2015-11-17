@@ -2,7 +2,7 @@
 
 if [ -f ./setup ]
 then
-  ./setup
+  source ./setup
 fi
 
 STARTCMD="/usr/sbin/mysqld"
