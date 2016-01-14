@@ -25,4 +25,4 @@ ADD rootfs /
 EXPOSE 3306
 
 WORKDIR /root
-CMD ["/usr/bin/s6-svscan", "/etc/s6"]
+CMD ["/bin/s6-svscan", "/etc/s6"]

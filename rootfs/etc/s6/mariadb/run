@@ -12,7 +12,7 @@ then
   if [ -z "${MARIADB_ROOT_PASSWORD}" ]
   then
     echo >&2 "Error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
-    /usr/bin/s6-svscanctl -t /etc/s6
+    /bin/s6-svscanctl -t /etc/s6
     exit 1
   fi
 
