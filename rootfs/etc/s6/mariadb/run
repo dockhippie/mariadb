@@ -5,7 +5,7 @@ then
   source ./setup
 fi
 
-STARTCMD="/usr/sbin/mysqld"
+STARTCMD="/usr/bin/mysqld_safe"
 
 if [ ! -d "/var/lib/mysql/mysql" ]
 then
@@ -16,22 +16,32 @@ then
     exit 1
   fi
 
-  mkdir -p /var/lib/mysql
-  chown mysql:mysql /var/lib/mysql
-
   echo "Running mysql_install_db..."
   mysql_install_db --user=mysql --datadir="/var/lib/mysql"
   echo "Finished mysql_install_db"
 
   INIT_FILE="/tmp/mariadb-boot.sql"
 
-  cat >| "${INIT_FILE}" <<-EOSQL
-    DELETE FROM mysql.user;
-    CREATE USER 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';
-    GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
-    DROP DATABASE IF EXISTS test;
-    FLUSH PRIVILEGES;
-EOSQL
+  echo "" >| ${INIT_FILE}
+  echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
+  echo "CREATE USER 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+  echo "GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;" >> ${INIT_FILE}
+  echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
+  echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+
+  if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_DATABASE}" ]]
+  then
+    echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
+    echo "GRANT ALL PRIVILEGES ON \`${MARIADB_DATABASE}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
+    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+  fi
+
+  if [[ -n "${MARIADB_USERNAME}" && -z "${MARIADB_DATABASE}" ]]
+  then
+    echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
+    echo "GRANT ALL PRIVILEGES ON \`${MARIADB_USERNAME}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
+    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+  fi
 
   STARTCMD="${STARTCMD} --init-file=${INIT_FILE}"
 fi
