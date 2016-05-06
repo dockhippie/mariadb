@@ -81,21 +81,6 @@ ENV LOGSTASH_OPTS
 ```
 
 
-## Available management commands
-
-```bash
-Usage: manage <command> [<args>]
-
-Some useful manage commands are:
-   commands  List all available sub commands
-   create    Create a database and user
-   grant     Grant database access
-   remove    Drop a database and user
-   revoke    Revoke database access
-   show      Show databases
-```
-
-
 ## Contributing
 
 Fork -> Patch -> Push -> Pull Request
@@ -104,7 +89,6 @@ Fork -> Patch -> Push -> Pull Request
 ## Authors
 
 * [Thomas Boerger](https://github.com/tboerger)
-* [Felix Böhm](https://github.com/felixboehm)
 
 
 ## License
@@ -115,5 +99,5 @@ MIT
 ## Copyright
 
 ```
-Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
+Copyright (c) 2015-2016 Thomas Boerger <http://www.webhippie.de>
 ```
