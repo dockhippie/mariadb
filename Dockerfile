@@ -1,7 +1,7 @@
 FROM webhippie/alpine:latest
 MAINTAINER Thomas Boerger <thomas@webhippie.de>
 
-VOLUME ["/var/lib/mysql"]
+VOLUME ["/var/lib/mysql", "/var/lib/backup"]
 
 EXPOSE 3306
 

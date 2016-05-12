@@ -16,6 +16,7 @@ These are docker images for [MariaDB](https://mariadb.org) database running on a
 ## Volumes
 
 * /var/lib/mysql
+* /var/lib/backup
 
 
 ## Ports

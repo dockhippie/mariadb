@@ -52,7 +52,6 @@ declare -x MARIADB_WRITE_BUFFER
 [[ -z "${MARIADB_READ_BUFFER}" ]] && MARIADB_READ_BUFFER="2M"
 [[ -z "${MARIADB_WRITE_BUFFER}" ]] && MARIADB_WRITE_BUFFER="2M"
 
-
 /usr/bin/templater -d -p mariadb \
   -o /etc/mysql/my.cnf \
   /etc/templates/my.cnf.tmpl
