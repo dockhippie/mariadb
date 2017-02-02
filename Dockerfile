@@ -8,6 +8,8 @@ EXPOSE 3306
 WORKDIR /root
 CMD ["/bin/s6-svscan", "/etc/s6"]
 
+ENV CRON_ENABLED true
+
 RUN apk update && \
   mkdir -p \
     /var/lib/mysql && \

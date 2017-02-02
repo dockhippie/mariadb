@@ -60,7 +60,7 @@ ENV MARIADB_WRITE_BUFFER 2M
 ## Inherited environment variables
 
 ```bash
-ENV CRON_ENABLED false
+ENV CRON_ENABLED true
 ```
 
 
