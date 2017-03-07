@@ -38,6 +38,7 @@ innodb_log_file_size = {{ envString "INNODB_LOG_FILE_SIZE" }}
 innodb_log_buffer_size = {{ envString "INNODB_LOG_BUFFER_SIZE" }}
 innodb_flush_log_at_trx_commit = {{ envString "INNODB_FLUSH_LOG_AT_TRX_COMMIT" }}
 innodb_lock_wait_timeout = {{ envString "INNODB_LOCK_WAIT_TIMEOUT" }}
+innodb_use_native_aio = {{ envString "INNODB_USE_NATIVE_AIO" }}
 
 [mysqldump]
 quick
