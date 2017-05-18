@@ -29,18 +29,18 @@ then
   echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
   echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
-  if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_DATABASE}" ]]
+  NEW_DB__NAME=${MARIADB_DATABASE:-$MARIADB_USERNAME}
+  if [ ! -z "${NEW_DB__NAME}" ]
   then
-    echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
-    echo "GRANT ALL PRIVILEGES ON \`${MARIADB_DATABASE}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
-    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
-  fi
+    echo "CREATE DATABASE IF NOT EXISTS \`${NEW_DB__NAME}\`;" >> ${INIT_FILE}
 
-  if [[ -n "${MARIADB_USERNAME}" && -z "${MARIADB_DATABASE}" ]]
-  then
-    echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
-    echo "GRANT ALL PRIVILEGES ON \`${MARIADB_USERNAME}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
-    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+    NEW_DB__USER=${MARIADB_USERNAME:-root}
+    if [ "$NEW_DB__USER" != "root" ]
+    then
+      echo "CREATE USER IF NOT EXISTS '${NEW_DB__USER}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE} # is able to create an User with NO Password
+      echo "GRANT ALL PRIVILEGES ON \`${NEW_DB__NAME}\`.* TO '${NEW_DB__USER}'@'%';" >> ${INIT_FILE}
+      echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+    fi
   fi
 
   STARTCMD="${STARTCMD} --init-file=${INIT_FILE}"
