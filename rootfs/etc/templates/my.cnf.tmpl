@@ -23,8 +23,12 @@ myisam_sort_buffer_size = {{ envString "MYISAM_SORT_BUFFER_SIZE" }}
 
 tmpdir = /tmp
 
+{{ if eq (envString "LOG_BIN") "0" }}
+skip-log-bin
+{{ else }}
 log-bin = {{ envString "LOG_BIN" }}
 binlog_format = {{ envString "BINLOG_FORMAT" }}
+{{ end }}
 
 server-id = {{ envString "SERVER_ID" }}
 
