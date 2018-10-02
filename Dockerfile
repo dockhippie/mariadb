@@ -25,10 +25,12 @@ RUN apk update && \
     mysql && \
   apk add \
     mariadb \
-    mariadb-client && \
+    mariadb-client \
+    mariadb-server-utils && \
   rm -rf \
     /var/cache/apk/* \
     /etc/mysql/* \
+    /etc/my.cnf* \
     /var/lib/mysql/*
 
 ADD rootfs /
