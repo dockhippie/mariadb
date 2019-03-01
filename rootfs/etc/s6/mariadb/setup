@@ -59,9 +59,9 @@ declare -x MARIADB_MAX_CONNECTIONS
 [[ -z "${MARIADB_WRITE_BUFFER}" ]] && MARIADB_WRITE_BUFFER="2M"
 [[ -z "${MARIADB_MAX_CONNECTIONS}" ]] && MARIADB_MAX_CONNECTIONS="151"
 
-/usr/bin/templater -d -p mariadb \
+/usr/bin/gomplate -V \
   -o /etc/mysql/my.cnf \
-  /etc/templates/my.cnf.tmpl
+  -f /etc/templates/my.cnf.tmpl
 
 if [[ $? -ne 0 ]]
 then

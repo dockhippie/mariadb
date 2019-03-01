@@ -2,61 +2,61 @@
 port = 3306
 socket = /run/mysqld/mysqld.sock
 
-default-character-set = {{ envString "DEFAULT_CHARACTER_SET" }}
+default-character-set = {{ getenv "MARIADB_DEFAULT_CHARACTER_SET" }}
 
 [mysqld]
 port = 3306
 socket = /run/mysqld/mysqld.sock
 
-character-set-server = {{ envString "CHARACTER_SET_SERVER" }}
-collation-server = {{ envString "COLLATION_SERVER" }}
+character-set-server = {{ getenv "MARIADB_CHARACTER_SET_SERVER" }}
+collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
 
 skip-external-locking
-key_buffer_size = {{ envString "KEY_BUFFER_SIZE" }}
-max_allowed_packet = {{ envString "MAX_ALLOWED_PACKET" }}
-table_open_cache = {{ envString "TABLE_OPEN_CACHE" }}
-sort_buffer_size = {{ envString "SORT_BUFFER_SIZE" }}
-net_buffer_length = {{ envString "NET_BUFFER_SIZE" }}
-read_buffer_size = {{ envString "READ_BUFFER_SIZE" }}
-read_rnd_buffer_size = {{ envString "READ_RND_BUFFER_SIZE" }}
-myisam_sort_buffer_size = {{ envString "MYISAM_SORT_BUFFER_SIZE" }}
-max_connections = {{ envString "MAX_CONNECTIONS" }}
+key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
+max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
+table_open_cache = {{ getenv "MARIADB_TABLE_OPEN_CACHE" }}
+sort_buffer_size = {{ getenv "MARIADB_SORT_BUFFER_SIZE" }}
+net_buffer_length = {{ getenv "MARIADB_NET_BUFFER_SIZE" }}
+read_buffer_size = {{ getenv "MARIADB_READ_BUFFER_SIZE" }}
+read_rnd_buffer_size = {{ getenv "MARIADB_READ_RND_BUFFER_SIZE" }}
+myisam_sort_buffer_size = {{ getenv "MARIADB_MYISAM_SORT_BUFFER_SIZE" }}
+max_connections = {{ getenv "MARIADB_MAX_CONNECTIONS" }}
 
 tmpdir = /tmp
 
-{{ if eq (envString "LOG_BIN") "0" }}
+{{ if eq (getenv "MARIADB_LOG_BIN") "0" }}
 skip-log-bin
 {{ else }}
-log-bin = {{ envString "LOG_BIN" }}
-binlog_format = {{ envString "BINLOG_FORMAT" }}
+log-bin = {{ getenv "MARIADB_LOG_BIN" }}
+binlog_format = {{ getenv "MARIADB_BINLOG_FORMAT" }}
 {{ end }}
 
-server-id = {{ envString "SERVER_ID" }}
+server-id = {{ getenv "MARIADB_SERVER_ID" }}
 
 innodb_data_home_dir = /var/lib/mysql
-innodb_data_file_path = {{ envString "INNODB_DATA_FILE_PATH" }}
+innodb_data_file_path = {{ getenv "MARIADB_INNODB_DATA_FILE_PATH" }}
 innodb_log_group_home_dir = /var/lib/mysql
-innodb_buffer_pool_size = {{ envString "INNODB_BUFFER_POOL_SIZE" }}
-innodb_log_file_size = {{ envString "INNODB_LOG_FILE_SIZE" }}
-innodb_log_buffer_size = {{ envString "INNODB_LOG_BUFFER_SIZE" }}
-innodb_flush_log_at_trx_commit = {{ envString "INNODB_FLUSH_LOG_AT_TRX_COMMIT" }}
-innodb_lock_wait_timeout = {{ envString "INNODB_LOCK_WAIT_TIMEOUT" }}
-innodb_use_native_aio = {{ envString "INNODB_USE_NATIVE_AIO" }}
-innodb_file_per_table = {{ envString "INNODB_FILE_PER_TABLE" }}
+innodb_buffer_pool_size = {{ getenv "MARIADB_INNODB_BUFFER_POOL_SIZE" }}
+innodb_log_file_size = {{ getenv "MARIADB_INNODB_LOG_FILE_SIZE" }}
+innodb_log_buffer_size = {{ getenv "MARIADB_INNODB_LOG_BUFFER_SIZE" }}
+innodb_flush_log_at_trx_commit = {{ getenv "MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMMIT" }}
+innodb_lock_wait_timeout = {{ getenv "MARIADB_INNODB_LOCK_WAIT_TIMEOUT" }}
+innodb_use_native_aio = {{ getenv "MARIADB_INNODB_USE_NATIVE_AIO" }}
+innodb_file_per_table = {{ getenv "MARIADB_INNODB_FILE_PER_TABLE" }}
 
 [mysqldump]
 quick
 quote-names
-max_allowed_packet = {{ envString "MAX_ALLOWED_PACKET" }}
+max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
 
 [mysql]
 no-auto-rehash
 
 [myisamchk]
-key_buffer_size = {{ envString "KEY_BUFFER_SIZE" }}
-sort_buffer_size = {{ envString "SORT_BUFFER_SIZE" }}
-read_buffer = {{ envString "READ_BUFFER" }}
-write_buffer = {{ envString "WRITE_BUFFER" }}
+key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
+sort_buffer_size = {{ getenv "MARIADB_SORT_BUFFER_SIZE" }}
+read_buffer = {{ getenv "MARIADB_READ_BUFFER" }}
+write_buffer = {{ getenv "MARIADB_WRITE_BUFFER" }}
 
 [mysqlhotcopy]
 interactive-timeout
