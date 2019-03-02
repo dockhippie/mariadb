@@ -1,5 +1,6 @@
 # MariaDB
 
+[![Build Status](https://cloud.drone.io/api/badges/dockhippie/mariadb/status.svg)](https://cloud.drone.io/dockhippie/mariadb)
 [![](https://images.microbadger.com/badges/image/webhippie/mariadb.svg)](https://microbadger.com/images/webhippie/mariadb "Get your own image badge on microbadger.com")
 
 These are docker images for [MariaDB](https://mariadb.org) database running on an [Alpine Linux container](https://registry.hub.docker.com/u/webhippie/alpine/).
@@ -7,7 +8,7 @@ These are docker images for [MariaDB](https://mariadb.org) database running on a
 
 ## Versions
 
-* [latest](https://github.com/dockhippie/mariadb/tree/master) available as ```webhippie/mariadb:latest``` at [Docker Hub](https://registry.hub.docker.com/u/webhippie/mariadb/)
+* [latest](./latest) available as `webhippie/mariadb:latest`
 
 
 ## Volumes
@@ -61,9 +62,7 @@ ENV MARIADB_MAX_CONNECTIONS 151
 
 ## Inherited environment variables
 
-```bash
-ENV CRON_ENABLED true
-```
+* [webhippie/alpine](https://github.com/dockhippie/alpine#available-environment-variables)
 
 
 ## Contributing
@@ -84,5 +83,5 @@ MIT
 ## Copyright
 
 ```
-Copyright (c) 2015-2017 Thomas Boerger <http://www.webhippie.de>
+Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
 ```
