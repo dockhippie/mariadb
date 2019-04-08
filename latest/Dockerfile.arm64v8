@@ -1,4 +1,4 @@
-FROM webhippie/alpine:latest-arm64v8@sha256:47921c78e4cb3dafe1338629eea137dd909882fb01e2583750e110ae4bdcc20b
+FROM webhippie/alpine:latest-arm64v8@sha256:2af125d3829f11d05c99396f5a29d5592f6d44fb37d9c384497fdd7beef62c5b
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="MariaDB" \
