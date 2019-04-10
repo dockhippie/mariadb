@@ -114,4 +114,32 @@ local agent(arch='amd64') =
         ],
       },
     },
+
+  downstream(depends_on=[], repositories=[])::
+    {
+      kind: 'pipeline',
+      name: 'trigger-downstream',
+      platform: {
+        os: 'linux',
+        arch: agent('amd64'),
+      },
+      steps: [
+        {
+          name: 'downstream',
+          image: 'plugins/downstream:1',
+          pull: 'always',
+          settings: {
+            server: 'https://cloud.drone.io',
+            token: { from_secret: 'downstream_token' },
+            repositories: repositories,
+          },
+        },
+      ],
+      depends_on: ['manifest-' + x for x in depends_on],
+      trigger: {
+        ref: [
+          'refs/heads/master',
+        ],
+      },
+    },
 }
