@@ -12,7 +12,7 @@ fi
 
 if [ -d ./custom.d ]
 then
-  for FILE in $(find ./custom.d -type f -iname *.sh | sort)
+  for FILE in $(find ./custom.d -type f -iname \*.sh | sort)
   do
     source ${FILE}
   done
