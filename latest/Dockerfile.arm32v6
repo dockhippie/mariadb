@@ -20,7 +20,7 @@ RUN apk update && \
   mkdir -p /var/lib/mysql && \
   groupadd -g 1000 mysql && \
   useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql && \
-  apk add mariadb mariadb-client mariadb-server-utils && \
+  apk add mariadb mariadb-client mariadb-server-utils tzdata && \
   rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay ./overlay-arm32v6 /
