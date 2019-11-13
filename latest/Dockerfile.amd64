@@ -1,4 +1,4 @@
-FROM webhippie/alpine:latest
+FROM webhippie/alpine:latest-amd64
 
 LABEL maintainer="Thomas Boerger <thomas@webhippie.de>" \
   org.label-schema.name="MariaDB" \
