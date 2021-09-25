@@ -1,56 +1,40 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -eo pipefail
+source /usr/bin/entrypoint
 
-DATABASES=$(mysql --password=${MARIADB_ROOT_PASSWORD} --user=root -e 'show databases;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
+DATABASES=$(mysql --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema|sys)")
 MAXIMUM=14
 
-if [ "${DATABASES}" == "" ]
-then
-  exit
+if [ "${DATABASES}" == "" ]; then
+    exit
 fi
 
-if [ ! -d /var/lib/backup ]
-then
-  mkdir -p /var/lib/backup
-  chmod 740 /var/lib/backup
+if [ ! -d /var/lib/backup ]; then
+    mkdir -p /var/lib/backup
+    chmod u=rwx,g=rwx,o= /var/lib/backup
 fi
 
-cd /tmp
+for (( COUNTER=${MAXIMUM}; COUNTER>=1; COUNTER-- )); do
+    if [ -d /var/lib/backup/backup.${COUNTER} ]; then
+        DEST=`expr ${COUNTER} + 1`
 
-for DATABASE in ${DATABASES}
-do
-  if [ -f /tmp/mysql-${DATABASE}.sql ]
-  then
-    rm -f /tmp/mysql-${DATABASE}.sql
-  fi
-
-  mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > /tmp/mysql-${DATABASE}.sql
-done
-
-for (( COUNTER=$MAXIMUM; COUNTER>=1; COUNTER-- ))
-do
-  if [ -d /var/lib/backup/backup.${COUNTER} ]
-  then
-    DEST=`expr $COUNTER + 1`
-
-    if [ $DEST -le $MAXIMUM ]
-    then
-      rm -rf /var/lib/backup/backup.${DEST}
-      mv /var/lib/backup/backup.${COUNTER} /var/lib/backup/backup.${DEST}
+        if [ ${DEST} -le ${MAXIMUM} ]; then
+            rm -rf /var/lib/backup/backup.${DEST}
+            mv /var/lib/backup/backup.${COUNTER} /var/lib/backup/backup.${DEST}
+        fi
     fi
-  fi
 done
 
 mkdir -p /var/lib/backup/backup.1
-chmod 740 /var/lib/backup/backup.1
+chmod u=rwx,g=rwx,o= /var/lib/backup/backup.1
 
 cd /var/lib/backup/backup.1
 
-for DATABASE in ${DATABASES}
-do
-  if [ -f /tmp/mysql-${DATABASE}.sql ]
-  then
-    mv /tmp/mysql-${DATABASE}.sql ${DATABASE}.sql
-    gzip ${DATABASE}.sql
-    chmod 640 ${DATABASE}.sql.gz
-  fi
+for DATABASE in ${DATABASES}; do
+    echo "Starting backup for ${DATABASE}..."
+    START=$(date +%s)
+    mysqldump --single-transaction --skip-add-locks --skip-lock-tables --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} --databases ${DATABASE} | gzip >| "${DATABASE}.sql.gz"
+    chmod u=rwx,g=rwx,o= "${DATABASE}.sql.gz"
+    ENDS=$(date +%s)
+    echo "Done within $((${ENDS}-${START}))s"
 done

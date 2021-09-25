@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -eo pipefail
+source /usr/bin/entrypoint
+
+for FILE in $(find /etc/container.d -type f -iname \*.sh | sort); do
+    source ${FILE}
+done
+
+pushd /var/lib/mysql >/dev/null
+    STARTCMD="su-exec mysql mysqld"
+
+    if [ ! -d "/var/lib/mysql/mysql" ]; then
+        if [ -z "${MARIADB_ROOT_PASSWORD}" ]; then
+            echo >&2 "Error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
+            exit 1
+        fi
+
+        echo "> running mysql_install_db..."
+        mysql_install_db --user=mysql --datadir="/var/lib/mysql"
+        echo "> finished mysql_install_db"
+
+        INIT_FILE="/tmp/mariadb-boot.sql"
+
+        echo "DELETE FROM mysql.user WHERE User != 'mariadb.sys';" >| ${INIT_FILE}
+        echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
+        echo "CREATE USER '${MARIADB_ROOT_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+        echo "GRANT ALL ON *.* TO '${MARIADB_ROOT_USERNAME}'@'%' WITH GRANT OPTION;" >> ${INIT_FILE}
+        echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+
+        if [[ -n "${MARIADB_USERNAME}" ]]; then
+            echo "CREATE USER '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
+            echo "GRANT ALL ON *.* TO '${MARIADB_USERNAME}'@'%';" >> ${INIT_FILE}
+            echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+        fi
+
+        MARIADB_DATABASE=${MARIADB_DATABASE:-${MARIADB_USERNAME}}
+
+        if [[ -n "${MARIADB_DATABASE}" ]]; then
+            DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
+
+            for DATABASE in ${DATABASES}; do
+                echo "CREATE DATABASE \`${DATABASE}\`;" >> ${INIT_FILE}
+            done
+        fi
+
+        for FILE in $(find /etc/mysql/init.d -type f -iname \*.sh | sort); do
+            source ${FILE}
+        done
+
+        STARTCMD="${STARTCMD} --init-file=${INIT_FILE}"
+    fi
+
+    echo "> starting mariadb service"
+    exec ${STARTCMD}
+popd >/dev/null

@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -eo pipefail
+source /usr/bin/entrypoint
 
-MARIADB_USERNAME=${MARIADB_USERNAME:-root}
-MARIADB_PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
+CHECK="$(echo 'SELECT 1;' | mysql -h127.0.0.1 -u${MARIADB_ROOT_USERNAME} -p${MARIADB_ROOT_PASSWORD} 2>/dev/null | head -n1)"
 
-CHECK="$(echo 'SELECT 1;' | mysql -h127.0.0.1 -u${MARIADB_USERNAME} -p${MARIADB_PASSWORD} 2>/dev/null | head -n1)"
-
-if [[ "${CHECK}" == "1" ]]
-then
-  exit 0
+if [[ "${CHECK}" == "1" ]]; then
+    exit 0
 fi
 
 exit 1
