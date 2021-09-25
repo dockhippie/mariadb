@@ -1,0 +1,134 @@
+---
+name: docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        version:
+          - folder: latest
+            tag: latest
+            arm64: true
+            arm: true
+
+    steps:
+      - name: Checkout source
+        id: source
+        uses: actions/checkout@v2
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          images: |
+            webhippie/mariadb
+            quay.io/webhippie/mariadb
+          labels: |
+            org.opencontainers.image.vendor=Webhippie
+            maintainer=Thomas Boerger <thomas@webhippie.de>
+
+      - name: Setup QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+
+      - name: Setup Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Hub login
+        id: login1
+        uses: docker/login-action@v1
+        if: github.event_name != 'pull_request'
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Quay login
+        id: login2
+        uses: docker/login-action@v1
+        if: github.event_name != 'pull_request'
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+      - name: Build amd64
+        id: amd64
+        uses: docker/build-push-action@v2
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ${{ matrix.version.folder }}/
+          file: ${{ matrix.version.folder }}/Dockerfile.amd64
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            webhippie/mariadb:${{ matrix.version.tag }}-amd64
+            quay.io/webhippie/mariadb:${{ matrix.version.tag }}-amd64
+
+      - name: Build arm64
+        id: arm64
+        uses: docker/build-push-action@v2
+        if: matrix.version.arm64
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ${{ matrix.version.folder }}/
+          file: ${{ matrix.version.folder }}/Dockerfile.arm64
+          platforms: linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            webhippie/mariadb:${{ matrix.version.tag }}-arm64
+            quay.io/webhippie/mariadb:${{ matrix.version.tag }}-arm64
+
+      - name: Build arm
+        id: arm
+        uses: docker/build-push-action@v2
+        if: matrix.version.arm
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ${{ matrix.version.folder }}/
+          file: ${{ matrix.version.folder }}/Dockerfile.arm
+          platforms: linux/arm/v6
+          push: ${{ github.event_name != 'pull_request' }}
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            webhippie/mariadb:${{ matrix.version.tag }}-arm
+            quay.io/webhippie/mariadb:${{ matrix.version.tag }}-arm
+
+      - name: Hub manifest
+        id: manifest1
+        uses: actionhippie/manifest@v1
+        if: github.event_name != 'pull_request'
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v6
+          template: webhippie/mariadb:${{ matrix.version.tag }}-ARCH
+          target: webhippie/mariadb:${{ matrix.version.tag }}
+          ignore_missing: true
+
+      - name: Quay manifest
+        id: manifest2
+        uses: actionhippie/manifest@v1
+        if: github.event_name != 'pull_request'
+        with:
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v6
+          template: quay.io/webhippie/mariadb:${{ matrix.version.tag }}-ARCH
+          target: quay.io/webhippie/mariadb:${{ matrix.version.tag }}
+          ignore_missing: true
+
+...

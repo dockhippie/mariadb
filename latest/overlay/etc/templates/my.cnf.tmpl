@@ -1,12 +1,16 @@
 [client]
 port = 3306
-socket = /run/mysqld/mysqld.sock
+socket = /tmp/mysqld.sock
 
 default-character-set = {{ getenv "MARIADB_DEFAULT_CHARACTER_SET" }}
 
 [mysqld]
 port = 3306
-socket = /run/mysqld/mysqld.sock
+bind-address = 0.0.0.0
+socket = /tmp/mysqld.sock
+
+character-set-server = {{ getenv "MARIADB_CHARACTER_SET_SERVER" }}
+collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
 
 character-set-server = {{ getenv "MARIADB_CHARACTER_SET_SERVER" }}
 collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
