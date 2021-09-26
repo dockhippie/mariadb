@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ "${MARIADB_SKIP_TEMPLATES}" != "true" ]]; then
-    echo "> writing nginx config"
+    echo "> writing mariadb config"
     gomplate -V \
         -o /etc/mysql/my.cnf \
         -f /etc/templates/my.cnf.tmpl || exit 1
