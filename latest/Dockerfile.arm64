@@ -4,7 +4,6 @@ VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/in
 EXPOSE 3306
 
 WORKDIR /var/lib/mysql
-ENTRYPOINT ["/usr/bin/entrypoint"]
 CMD ["/usr/bin/container"]
 
 RUN apk update && \
