@@ -2,33 +2,33 @@
 set -eo pipefail
 source /usr/bin/entrypoint
 
-DATABASES=$(mysql --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema|sys)")
-MAXIMUM=14
+DATABASES=$(mysql --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "${MARIADB_BACKUP_IGNORE}")
+MAXIMUM=${MARIADB_BACKUP_RETENTION}
 
 if [ "${DATABASES}" == "" ]; then
     exit
 fi
 
-if [ ! -d /var/lib/backup ]; then
-    mkdir -p /var/lib/backup
-    chmod u=rwx,g=rwx,o= /var/lib/backup
+if [ ! -d ${MARIADB_BACKUP_PATH} ]; then
+    mkdir -p ${MARIADB_BACKUP_PATH}
+    chmod u=rwx,g=rwx,o= ${MARIADB_BACKUP_PATH}
 fi
 
 for (( COUNTER=${MAXIMUM}; COUNTER>=1; COUNTER-- )); do
-    if [ -d /var/lib/backup/backup.${COUNTER} ]; then
+    if [ -d ${MARIADB_BACKUP_PATH}/backup.${COUNTER} ]; then
         DEST=`expr ${COUNTER} + 1`
 
         if [ ${DEST} -le ${MAXIMUM} ]; then
-            rm -rf /var/lib/backup/backup.${DEST}
-            mv /var/lib/backup/backup.${COUNTER} /var/lib/backup/backup.${DEST}
+            rm -rf ${MARIADB_BACKUP_PATH}/backup.${DEST}
+            mv ${MARIADB_BACKUP_PATH}/backup.${COUNTER} ${MARIADB_BACKUP_PATH}/backup.${DEST}
         fi
     fi
 done
 
-mkdir -p /var/lib/backup/backup.1
-chmod u=rwx,g=rwx,o= /var/lib/backup/backup.1
+mkdir -p ${MARIADB_BACKUP_PATH}/backup.1
+chmod u=rwx,g=rwx,o= ${MARIADB_BACKUP_PATH}/backup.1
 
-cd /var/lib/backup/backup.1
+cd ${MARIADB_BACKUP_PATH}/backup.1
 
 for DATABASE in ${DATABASES}; do
     echo "Starting backup for ${DATABASE}..."

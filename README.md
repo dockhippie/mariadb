@@ -22,6 +22,9 @@ For the available versions please look at [Docker Hub](https://hub.docker.com/r/
 ## Available environment variables
 
 ```console
+MARIADB_BACKUP_IGNORE = (mysql|information_schema|performance_schema|sys)
+MARIADB_BACKUP_PATH = /var/lib/backup
+MARIADB_BACKUP_RETENTION = 14
 MARIADB_BINLOG_FORMAT = mixed
 MARIADB_CHARACTER_SET_SERVER = utf8
 MARIADB_COLLATION_SERVER = utf8_general_ci
