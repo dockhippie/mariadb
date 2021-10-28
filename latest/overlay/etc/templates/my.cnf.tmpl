@@ -15,6 +15,10 @@ collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
 character-set-server = {{ getenv "MARIADB_CHARACTER_SET_SERVER" }}
 collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
 
+{{ if ne (getenv "MARIADB_TRANSACTION_ISOLATION") "" }}
+transaction-isolation =  {{ getenv "MARIADB_TRANSACTION_ISOLATION" }}
+{{ end }}
+
 skip-external-locking
 key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
 max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
@@ -47,6 +51,7 @@ innodb_flush_log_at_trx_commit = {{ getenv "MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMM
 innodb_lock_wait_timeout = {{ getenv "MARIADB_INNODB_LOCK_WAIT_TIMEOUT" }}
 innodb_use_native_aio = {{ getenv "MARIADB_INNODB_USE_NATIVE_AIO" }}
 innodb_file_per_table = {{ getenv "MARIADB_INNODB_FILE_PER_TABLE" }}
+innodb_read_only_compressed = {{ getenv "MARIADB_INNODB_READ_ONLY_COMPRESSED" }}
 
 [mysqldump]
 quick
