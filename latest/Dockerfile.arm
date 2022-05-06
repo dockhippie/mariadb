@@ -1,4 +1,4 @@
-FROM webhippie/alpine:latest-arm@sha256:9a3e8aa27c9424fb3653885206dd671901d933be8d9ed41474a632c1af05ae84
+FROM webhippie/alpine:latest-arm@sha256:cf173bcb12f751632ad49792d13965b200b27f59fba2f0c7c571184928fc277b
 
 VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
 EXPOSE 3306
