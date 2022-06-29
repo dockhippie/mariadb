@@ -10,7 +10,7 @@ on:
       - master
 
 jobs:
-  publish:
+  docker:
     runs-on: ubuntu-20.04
 
     strategy:
