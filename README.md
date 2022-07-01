@@ -1,23 +1,26 @@
 # mariadb
 
-[![Docker Build](https://github.com/dockhippie/mariadb/workflows/docker/badge.svg)](https://github.com/dockhippie/mariadb/actions?query=workflow%3Adocker) [![Readme Build](https://github.com/dockhippie/mariadb/workflows/readme/badge.svg)](https://github.com/dockhippie/mariadb/actions?query=workflow%3Areadme) [![Docker Size](https://img.shields.io/docker/image-size/webhippie/mariadb/latest)](#) [![Docker Pulls](https://img.shields.io/docker/pulls/webhippie/mariadb)](https://hub.docker.com/r/webhippie/mariadb) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mariadb)
+[![Docker Build](https://github.com/dockhippie/mariadb/actions/workflows/docker.yml/badge.svg)](https://github.com/dockhippie/mariadb/actions/workflows/docker.yml) [![GitHub Repo](https://img.shields.io/badge/github-repo-yellowgreen)](https://github.com/dockhippie/mariadb)
 
-These are docker images for [MariaDB](https://mariadb.org) running on our [Alpine Linux image](https://github.com/dockhippie/alpine).
+These are docker images for [MariaDB][upstream] running on our
+[Alpine Linux image][parent].
 
 ## Versions
 
-For the available versions please look at [Docker Hub](https://hub.docker.com/r/webhippie/mariadb/tags) or [Quay](https://quay.io/repository/webhippie/mariadb?tab=tags) or check the existing folders within the [GitHub repository](https://github.com/dockhippie/mariadb).
+For the available versions please look at [Docker Hub][dockerhub] or
+[Quay][quayio] or check the existing folders within the
+[GitHub repository][github].
 
 ## Volumes
 
-* /var/lib/mysql
-* /var/lib/backup
-* /etc/mysql/conf.d
-* /etc/mysql/init.d
+*  /var/lib/mysql
+*  /var/lib/backup
+*  /etc/mysql/conf.d
+*  /etc/mysql/init.d
 
 ## Ports
 
-* 3306
+*  3306
 
 ## Available environment variables
 
@@ -82,3 +85,9 @@ MIT
 ```console
 Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
 ```
+
+[upstream]: https://mariadb.org
+[parent]: https://github.com/dockhippie/alpine
+[dockerhub]: https://hub.docker.com/r/webhippie/mariadb/tags
+[quayio]: https://quay.io/repository/webhippie/mariadb?tab=tags
+[github]: https://github.com/dockhippie/mariadb
