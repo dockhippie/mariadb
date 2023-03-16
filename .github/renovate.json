@@ -14,5 +14,8 @@
             "automerge": true
         }
     },
-    "packageRules": []
+    "packageRules": [],
+    "ignoreDeps": [
+        "docker/build-push-action"
+    ]
 }
