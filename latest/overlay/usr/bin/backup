@@ -2,7 +2,7 @@
 set -eo pipefail
 source /usr/bin/entrypoint
 
-DATABASES=$(mysql --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "${MARIADB_BACKUP_IGNORE}")
+DATABASES=$(mariadb --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "${MARIADB_BACKUP_IGNORE}")
 MAXIMUM=${MARIADB_BACKUP_RETENTION}
 
 if [ "${DATABASES}" == "" ]; then
@@ -33,7 +33,7 @@ cd ${MARIADB_BACKUP_PATH}/backup.1
 for DATABASE in ${DATABASES}; do
     echo "Starting backup for ${DATABASE}..."
     START=$(date +%s)
-    mysqldump --single-transaction --skip-add-locks --skip-lock-tables --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} --databases ${DATABASE} | gzip >| "${DATABASE}.sql.gz"
+    mariadb-dump --single-transaction --skip-add-locks --skip-lock-tables --user=${MARIADB_ROOT_USERNAME} --password=${MARIADB_ROOT_PASSWORD} --databases ${DATABASE} | gzip >| "${DATABASE}.sql.gz"
     chmod u=rwx,g=rwx,o= "${DATABASE}.sql.gz"
     ENDS=$(date +%s)
     echo "Done within $((${ENDS}-${START}))s"
