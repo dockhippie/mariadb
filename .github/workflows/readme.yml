@@ -1,13 +1,12 @@
 ---
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
 name: readme
 
 "on":
+  workflow_dispatch:
   push:
     branches:
       - master
-    paths:
-      - README.md
-  workflow_dispatch:
 
 jobs:
   readme:
@@ -17,18 +16,17 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v5
 
-      - name: Push readme
+      - name: Hub readme
         uses: actionhippie/pushrm@v1
-        if: github.event_name != 'pull_request'
         with:
           provider: dockerhub
           target: webhippie/mariadb
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          description: Docker image for mariadb
+          description: Docker image for MariaDB
           readme: README.md
 
-      - name: Push readme
+      - name: Quay readme
         uses: actionhippie/pushrm@v1
         with:
           provider: quay
