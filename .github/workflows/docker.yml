@@ -13,9 +13,6 @@ name: latest
   pull_request:
     branches:
       - master
-    paths:
-      - latest/*
-      - .github/workflows/docker.yml
 
 permissions:
   contents: read
