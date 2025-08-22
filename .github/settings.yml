@@ -50,6 +50,12 @@ rulesets:
           required_status_checks:
             - context: Semantic PR
               integration_id: 198092
+            - context: docker (amd64, linux/amd64)
+              integration_id: 15368
+            - context: docker (arm64, linux/arm64)
+              integration_id: 15368
+            - context: docker (arm, linux/arm/v6)
+              integration_id: 15368
     bypass_actors:
       - actor_id: 1
         actor_type: OrganizationAdmin
