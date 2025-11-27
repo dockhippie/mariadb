@@ -1,4 +1,4 @@
-FROM ghcr.io/dockhippie/alpine:latest-arm@sha256:637b7a722fa52d2bbed72e1e9fc98c29ba4b9b5394c1c0d8674de794b533c82a
+FROM ghcr.io/dockhippie/alpine:latest-arm@sha256:6e8e1cab6a49468225c67d40960c798ac33d0b3193e1f24647507dcfbb641050
 
 VOLUME ["/var/lib/mysql", "/var/lib/backup", "/etc/mysql/conf.d", "/etc/mysql/init.d"]
 EXPOSE 3306
