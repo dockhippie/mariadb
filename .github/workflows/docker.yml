@@ -55,7 +55,7 @@ jobs:
             maintainer=Thomas Boerger <thomas@webhippie.de>
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Setup Buildx
         id: buildx
